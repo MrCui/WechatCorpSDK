@@ -24,7 +24,7 @@ class TagApi extends BaseApi
         if (!$tagname) {
             $this->setError('tagname');
 
-            return  false;
+            return false;
         }
         $data['tagname'] = $tagname;
         $node = 'create';
@@ -47,7 +47,7 @@ class TagApi extends BaseApi
         if (!$tagname || !$tagid) {
             $this->setError('tagname || tagid');
 
-            return  false;
+            return false;
         }
         $data['tagname'] = $tagname;
         $data['tagid'] = $tagid;
@@ -70,14 +70,14 @@ class TagApi extends BaseApi
         if (!$tagid) {
             $this->setError('tagid');
 
-            return  false;
+            return false;
         }
 
         $node = 'delete';
 
         $queryStr = array(
-                'tagid' => $tagid,
-            );
+            'tagid' => $tagid,
+        );
 
         return $this->_get($node, $queryStr);
     }
@@ -96,14 +96,14 @@ class TagApi extends BaseApi
         if (!$tagid) {
             $this->setError('tagid');
 
-            return  false;
+            return false;
         }
 
         $node = 'get';
 
         $queryStr = array(
             'tagid' => $tagid,
-            );
+        );
 
         return $this->_get($node, $queryStr);
     }
@@ -124,13 +124,13 @@ class TagApi extends BaseApi
         if (!$tagid) {
             $this->setError('tagid');
 
-            return  false;
+            return false;
         }
 
         if (!$userlist && !$partylist) {
             $this->setError('userlist,partylist至少填一项');
 
-            return  false;
+            return false;
         }
         $node = 'addtagusers';
         $data = array();
@@ -162,13 +162,13 @@ class TagApi extends BaseApi
         if (!$tagid) {
             $this->setError('tagid');
 
-            return  false;
+            return false;
         }
 
         if (!$userlist && !$partylist) {
             $this->setError('userlist,partylist至少填一项');
 
-            return  false;
+            return false;
         }
         $node = 'deltagusers';
         $data = array();

@@ -5,17 +5,17 @@ namespace WeixinAPI\API;
 /**
  * 微信 发送消息的相关接口.
  * 注意本类采用链式操作 ->touser()->news()->send();
- * 
+ *
  * @author Cui.
  */
 class MessageApi extends BaseApi
 {
-    private $touserData     = array();
-    private $topartyData    = array();
-    private $totagData      = array();
-    private $messageData    = array();
-    private $safe           = 0;
-    private $messageType    = '';
+    private $touserData = array();
+    private $topartyData = array();
+    private $totagData = array();
+    private $messageData = array();
+    private $safe = 0;
+    private $messageType = '';
 
     /**
      * 设置需要接收消息的用户列表.
@@ -106,8 +106,8 @@ class MessageApi extends BaseApi
     public function text($content)
     {
         $data = array(
-                'content' => $content,
-            );
+            'content' => $content,
+        );
 
         $this->messageType = 'text';
         $this->messageData = $data;
@@ -147,14 +147,14 @@ class MessageApi extends BaseApi
         }
 
         foreach ($args as $article) {
-            
+
             if (count($article) != count($article, 1)) {
                 foreach ($article as $art) {
-                    $data['articles'][] =  $art;
+                    $data['articles'][] = $art;
                 }
 
             } else {
-                $data['articles'][] = $article; 
+                $data['articles'][] = $article;
             }
         }
 
@@ -163,7 +163,7 @@ class MessageApi extends BaseApi
 
         return $this;
     }
-    
+
     /**
      * 设置image消息.
      *
@@ -178,8 +178,8 @@ class MessageApi extends BaseApi
     public function image($mediaId)
     {
         $data = array(
-                'media_id' => $mediaId,
-            );
+            'media_id' => $mediaId,
+        );
 
         $this->messageType = 'image';
         $this->messageData = $data;
@@ -201,8 +201,8 @@ class MessageApi extends BaseApi
     public function file($mediaId)
     {
         $data = array(
-                'media_id' => $mediaId,
-            );
+            'media_id' => $mediaId,
+        );
 
         $this->messageType = 'file';
         $this->messageData = $data;
@@ -224,8 +224,8 @@ class MessageApi extends BaseApi
     public function voice($mediaId)
     {
         $data = array(
-                'media_id' => $mediaId,
-            );
+            'media_id' => $mediaId,
+        );
 
         $this->messageType = 'voice';
         $this->messageData = $data;
@@ -249,8 +249,8 @@ class MessageApi extends BaseApi
     public function video($mediaId, $title = '', $description = '')
     {
         $data = array(
-                'media_id' => $mediaId,
-            );
+            'media_id' => $mediaId,
+        );
 
         $title && $data['title'] = $title;
         $description && $data['description'] = $description;
@@ -280,9 +280,9 @@ class MessageApi extends BaseApi
             return false;
         }
 
-        $toUser  = $this->touserData;
+        $toUser = $this->touserData;
         $toParty = $this->topartyData;
-        $toTag   = $this->totagData;
+        $toTag = $this->totagData;
 
         if (!$toUser && !$toParty && !$toTag) {
             $this->setError('接收消息的用户,部门和标签, 不能同时为空!');
@@ -291,9 +291,9 @@ class MessageApi extends BaseApi
         }
 
         $data = array();
-        $toUser  && $data['touser']  = $toUser;
+        $toUser && $data['touser'] = $toUser;
         $toParty && $data['toparty'] = $toParty;
-        $toTag   && $data['totag']   = $toTag;
+        $toTag && $data['totag'] = $toTag;
 
         $messageType = $this->messageType;
         $types = array('image', 'file', 'text', 'news', 'voice', 'video', 'mpnews');
@@ -312,18 +312,18 @@ class MessageApi extends BaseApi
         }
 
         $data[$messageType] = $messageData;
-        $data['agentid']    = $agentId;
-        $data['safe']       = $this->safe;
+        $data['agentid'] = $agentId;
+        $data['safe'] = $this->safe;
 
         $node = 'send';
 
         // 清空数据;
-        $this->touserData     = array();
-        $this->topartyData    = array();
-        $this->totagData      = array();
-        $this->messageData    = array();
-        $this->safe           = 0;
-        $this->messageType    = '';
+        $this->touserData = array();
+        $this->topartyData = array();
+        $this->totagData = array();
+        $this->messageData = array();
+        $this->safe = 0;
+        $this->messageType = '';
 
         return $this->_post($node, $data);
     }

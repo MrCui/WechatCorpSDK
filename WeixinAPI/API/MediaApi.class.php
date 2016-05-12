@@ -30,7 +30,7 @@ class MediaApi extends BaseApi
 
             return false;
         }
-        
+
         if (!file_exists($file)) {
             $this->setError('文件路径不正确');
 

@@ -4,7 +4,6 @@ namespace WeixinAPI;
 
 use WeixinAPI\API\BaseApi;
 
-
 // 注册自动加载方法. 如果引入的框架有自动加载方法 可以删除此方法 然后请根据框架自行调整命名空间
 spl_autoload_register('WeixinAPI\Api::autoload');
 
@@ -15,12 +14,12 @@ spl_autoload_register('WeixinAPI\Api::autoload');
  */
 class Api
 {
-    private static $error           = '';       // 错误信息;
-    private static $selfInstanceMap = array();  // 实例列表;
-    private static $CORP_ID;                    // 企业号corp_id;
-    private static $CORP_SECRECT;               // 企业号corp_secrect
-    private static $CACHE_DRIVER;               // 接口缓存驱动类名
-    private static $postQueryStr    = array();  // post数据时 需要携带的查询字符串
+    private static $error = ''; // 错误信息;
+    private static $selfInstanceMap = array(); // 实例列表;
+    private static $CORP_ID; // 企业号corp_id;
+    private static $CORP_SECRECT; // 企业号corp_secrect
+    private static $CACHE_DRIVER; // 接口缓存驱动类名
+    private static $postQueryStr = array(); // post数据时 需要携带的查询字符串
 
     const WEIXIN_BASE_API = 'https://qyapi.weixin.qq.com/cgi-bin';
 
@@ -37,7 +36,7 @@ class Api
      */
     public static function init($corpid, $corpsecret, $cacheDriver = 'File')
     {
-        self::$CORP_ID      = $corpid;
+        self::$CORP_ID = $corpid;
         self::$CORP_SECRECT = $corpsecret;
         self::$CACHE_DRIVER = $cacheDriver;
     }
@@ -55,19 +54,19 @@ class Api
      */
     public static function factory($className)
     {
-        $className = __NAMESPACE__.'\\API\\'.$className.'Api';
+        $className = __NAMESPACE__ . '\\API\\' . $className . 'Api';
         if (!$className || !is_string($className)) {
-            throw new \Exception('类名参数不正确', 1); 
+            throw new \Exception('类名参数不正确', 1);
         }
 
-        if (! class_exists($className)) {
-            throw new \Exception($className.'接口不存在', 1);   
+        if (!class_exists($className)) {
+            throw new \Exception($className . '接口不存在', 1);
         }
 
         if (!array_key_exists($className, self::$selfInstanceMap)) {
             $api = new $className();
             if (!$api instanceof BaseApi) {
-                throw new \Exception($className.' 必须继承 BaseApi', 1);
+                throw new \Exception($className . ' 必须继承 BaseApi', 1);
             }
 
             self::$selfInstanceMap[$className] = $api;
@@ -158,16 +157,16 @@ class Api
      */
     public static function getAccessToken()
     {
-        $key = self::$CORP_SECRECT.'access_token';
+        $key = self::$CORP_SECRECT . 'access_token';
         $token = self::cache($key);
         if (false == $token) {
             $corpId = self::$CORP_ID;
             $corpSecrect = self::$CORP_SECRECT;
             $module = 'gettoken';
             $queryStr = array(
-                    'corpid' => $corpId,
-                    'corpsecret' => $corpSecrect,
-                );
+                'corpid' => $corpId,
+                'corpsecret' => $corpSecrect,
+            );
 
             $res = self::_get($module, '', $queryStr);
             if (false === $res) {
@@ -205,8 +204,8 @@ class Api
         }
 
         $queryStr = http_build_query($queryStr);
-        $apiUrl  =  rtrim(self::WEIXIN_BASE_API.'/'.$module.'/'.$node, '/');
-        $apiUrl  .= '?'.$queryStr;
+        $apiUrl = rtrim(self::WEIXIN_BASE_API . '/' . $module . '/' . $node, '/');
+        $apiUrl .= '?' . $queryStr;
 
         $header[] = 'Bizmp-Version:2.0';
 
@@ -251,7 +250,7 @@ class Api
      *
      * @return array 错误时返回false;
      */
-    public static function _post($module, $node = '', $data,  $jsonEncode = true)
+    public static function _post($module, $node = '', $data, $jsonEncode = true)
     {
         $token = self::getAccessToken();
         if (false === $token) {
@@ -267,15 +266,15 @@ class Api
         // 获取数据后 重置数据;
         self::$postQueryStr = array();
 
-        $apiUrl  =  rtrim(self::WEIXIN_BASE_API.'/'.$module.'/'.$node, '/');
-        $apiUrl .=  '?'.$postQueryStr;
+        $apiUrl = rtrim(self::WEIXIN_BASE_API . '/' . $module . '/' . $node, '/');
+        $apiUrl .= '?' . $postQueryStr;
 
         if ($jsonEncode) {
             if (is_array($data)) {
-                if (! defined('JSON_UNESCAPED_UNICODE')) {
+                if (!defined('JSON_UNESCAPED_UNICODE')) {
                     // 解决php 5.3版本 json转码时 中文编码问题.
                     $data = json_encode($data);
-                    $data = preg_replace("#\\\u([0-9a-f]{4})#ie", "iconv('UCS-2BE', 'UTF-8', pack('H4', '\\1'))", $data);  
+                    $data = preg_replace("#\\\u([0-9a-f]{4})#ie", "iconv('UCS-2BE', 'UTF-8', pack('H4', '\\1'))", $data);
                 } else {
                     $data = json_encode($data, JSON_UNESCAPED_UNICODE);
                 }
@@ -296,7 +295,7 @@ class Api
                 curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
             }
         }
-        
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -340,7 +339,7 @@ class Api
         }
 
         $status = $apiReturnData['status'];
-        $info   = $apiReturnData['info'];
+        $info = $apiReturnData['info'];
         $header = $apiReturnData['header'];
         $apiReturnData = json_decode($info, true);
 
@@ -356,17 +355,17 @@ class Api
 
         // 获取文件的特殊设置.
         if (!$apiReturnData) {
-            $log['response']            = array();
-            $apiReturnData              = array();
-            $apiReturnData['content']   = base64_encode($info);
-            $apiReturnData['type']      = $header['Content-Type'];
-            $apiReturnData['size']      = $header['Content-Length'];
+            $log['response'] = array();
+            $apiReturnData = array();
+            $apiReturnData['content'] = base64_encode($info);
+            $apiReturnData['type'] = $header['Content-Type'];
+            $apiReturnData['size'] = $header['Content-Length'];
 
             if (isset($header['Content-disposition'])) {
                 $res = preg_match('/".+"/', $header['Content-disposition'], $matchArr);
 
                 if ($res && $matchArr) {
-                    $apiReturnData['filename']   = reset($matchArr);
+                    $apiReturnData['filename'] = reset($matchArr);
                     $log['response']['filename'] = $apiReturnData['filename'];
                 }
             }
@@ -376,7 +375,7 @@ class Api
         }
 
         if (isset($apiReturnData['errcode']) && $apiReturnData['errcode'] != 0) {
-            self::setError('错误码:'.$apiReturnData['errcode'].', 错误信息:'.$apiReturnData['errmsg']);
+            self::setError('错误码:' . $apiReturnData['errcode'] . ', 错误信息:' . $apiReturnData['errmsg']);
 
             return false;
         }
@@ -431,7 +430,7 @@ class Api
                 $key = $h[0];
             } else {
                 if (substr($h[0], 0, 1) == "\t") {
-                    $headers[$key] .= "\r\n\t".trim($h[0]);
+                    $headers[$key] .= "\r\n\t" . trim($h[0]);
                 } elseif (!$key) {
                     $headers[0] = trim($h[0]);
                 }
@@ -463,8 +462,8 @@ class Api
 
         static $cacheDriver;
         if (!isset($cacheDriver)) {
-            $cacheDriver = __NAMESPACE__.'\\CacheDriver\\'.self::$CACHE_DRIVER.'Driver';
-            $cacheDriver = new $cacheDriver(__DIR__.'/Cache/');
+            $cacheDriver = __NAMESPACE__ . '\\CacheDriver\\' . self::$CACHE_DRIVER . 'Driver';
+            $cacheDriver = new $cacheDriver(__DIR__ . '/Cache/');
         }
 
         if (!$value && $value !== 0) {
@@ -495,8 +494,15 @@ class Api
     {
         static $_map;
         if (!isset($_map[$class])) {
-            $class = str_replace(__NAMESPACE__, '', $class);
-            $file = (__DIR__.$class.'.class.php');
+            $class = explode('\\', $class);
+            $rootpath = array_shift($class);
+            if ($rootpath != "WeixinAPI") {
+                return;
+            }
+
+            $class = implode(DIRECTORY_SEPARATOR, $class);
+            $file = (__DIR__ . DIRECTORY_SEPARATOR . $class . '.class.php');
+
             if (!file_exists($file)) {
                 return false;
             }

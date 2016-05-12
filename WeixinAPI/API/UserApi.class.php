@@ -31,21 +31,21 @@ class UserApi extends BaseApi
             return false;
         }
 
-        $host = isset($_SERVER['HTTP_HOST']) ? 'http://'.$_SERVER['HTTP_HOST'] : '';
+        $host = isset($_SERVER['HTTP_HOST']) ? 'http://' . $_SERVER['HTTP_HOST'] : '';
         $api = 'https://open.weixin.qq.com/connect/oauth2/authorize';
 
         $state = $state ? $state = base64_encode($state) : '';
 
         $url = array();
         $url['appid'] = Api::getCorpId();
-        $url['redirect_uri'] = $host.$redirectUri;
+        $url['redirect_uri'] = $host . $redirectUri;
         $url['response_type'] = 'code';
         $url['scope'] = 'snsapi_base';
         $url['state'] = $state;
         $url = http_build_query($url);
 
         $url .= '#wechat_redirect';
-        $url = $api.'?'.$url;
+        $url = $api . '?' . $url;
 
         return $url;
     }
@@ -65,7 +65,7 @@ class UserApi extends BaseApi
         }
 
         $url = $this->createOAuthUrl($redirectUri, $state);
-        header('Location:'.$url);
+        header('Location:' . $url);
         exit;
     }
 
@@ -122,13 +122,13 @@ class UserApi extends BaseApi
         if (!$userid || !$name) {
             $this->setError('userid和name必填!');
 
-            return  false;
+            return false;
         }
 
         if (!is_array($must) || empty($must)) {
             $this->setError('weixinid, mobile, email三者至少填一个!');
 
-            return  false;
+            return false;
         }
 
         $data = array();
@@ -159,7 +159,7 @@ class UserApi extends BaseApi
         if (!$userid) {
             $this->setError('userid');
 
-            return  false;
+            return false;
         }
         $data['userid'] = $userid;
         $node = 'update';
@@ -181,12 +181,12 @@ class UserApi extends BaseApi
         if (!$userId) {
             $this->setError('userid');
 
-            return  false;
+            return false;
         }
 
         $queryStr = array(
-                'userid' => $userId,
-            );
+            'userid' => $userId,
+        );
 
         $node = 'delete';
 
@@ -207,7 +207,7 @@ class UserApi extends BaseApi
         if (!$userList) {
             $this->setError('userList');
 
-            return  false;
+            return false;
         }
 
         $data = array();
@@ -239,8 +239,8 @@ class UserApi extends BaseApi
         }
 
         $data = array(
-                'userid' => $userId,
-            );
+            'userid' => $userId,
+        );
 
         $this->module = 'invite';
 
@@ -270,8 +270,8 @@ class UserApi extends BaseApi
         }
 
         $queryStr = array(
-                'userid' => $userId,
-            );
+            'userid' => $userId,
+        );
 
         $node = 'get';
 
@@ -300,8 +300,8 @@ class UserApi extends BaseApi
         $node = 'getuserinfo';
 
         $queryStr = array(
-                'code' => $code,
-            );
+            'code' => $code,
+        );
 
         return $this->_get($node, $queryStr);
     }
@@ -330,10 +330,10 @@ class UserApi extends BaseApi
         $node = 'simplelist';
 
         $queryStr = array(
-                'department_id' => $departmentId,
-                'fetch_child' => $fetchChild,
-                'status'     =>  $status,
-            );
+            'department_id' => $departmentId,
+            'fetch_child' => $fetchChild,
+            'status' => $status,
+        );
 
         return $this->_get($node, $queryStr);
     }
@@ -362,10 +362,10 @@ class UserApi extends BaseApi
         $node = 'list';
 
         $queryStr = array(
-                'department_id' => $departmentId,
-                'fetch_child' => $fetchChild,
-                'status'     =>  $status,
-            );
+            'department_id' => $departmentId,
+            'fetch_child' => $fetchChild,
+            'status' => $status,
+        );
 
         return $this->_get($node, $queryStr);
     }

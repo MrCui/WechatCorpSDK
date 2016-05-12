@@ -92,8 +92,8 @@ class DepartmentApi extends BaseApi
 
         $node = 'delete';
         $queryStr = array(
-                'id' => $id,
-            );
+            'id' => $id,
+        );
 
         return $this->_get($node, $queryStr);
     }

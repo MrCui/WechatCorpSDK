@@ -56,8 +56,8 @@ class MenuApi extends BaseApi
         }
 
         $queryStr = array(
-                'agentid' => $agentId
-            );
+            'agentid' => $agentId,
+        );
 
         $node = 'delete';
 
@@ -72,7 +72,7 @@ class MenuApi extends BaseApi
      * @date   2015-08-23
      *
      * @param  int     $agentId 应用id
-     * 
+     *
      * @return array
      */
     public function get($agentId)
@@ -84,8 +84,8 @@ class MenuApi extends BaseApi
         }
 
         $queryStr = array(
-                'agentid' => $agentId
-            );
+            'agentid' => $agentId,
+        );
 
         $node = 'get';
 

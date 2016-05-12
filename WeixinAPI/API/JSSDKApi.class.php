@@ -22,7 +22,7 @@ class JSSDKApi extends BaseApi
      */
     public function getTicket()
     {
-        $key = 'JSAPI_TICKET'.Api::getSecrect();
+        $key = 'JSAPI_TICKET' . Api::getSecrect();
         $ticket = Api::Cache($key);
         if (!$ticket) {
             $this->module = 'get_jsapi_ticket';
@@ -63,7 +63,7 @@ class JSSDKApi extends BaseApi
 
         $signature = '';
         foreach ($data as $key => $value) {
-            $signature .= $key.'='.$value.'&';
+            $signature .= $key . '=' . $value . '&';
         }
 
         $signature = rtrim($signature, '&');
