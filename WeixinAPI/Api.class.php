@@ -174,10 +174,10 @@ class Api
             }
 
             $token = $res['access_token'];
-        }
 
-        // 鉴于微信的AccessToken刷新机制, 所以每次调用均刷新缓存.
-        self::cache($key, $token, 7200 - 300);
+            // 企业微信更新了token刷新机制
+            self::cache($key, $token, 7200 - 300);
+        }
 
         return $token;
     }
