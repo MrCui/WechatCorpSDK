@@ -3,9 +3,7 @@
 namespace WeixinAPI;
 
 use WeixinAPI\API\BaseApi;
-
-// 注册自动加载方法. 如果引入的框架有自动加载方法 可以删除此方法 然后请根据框架自行调整命名空间
-spl_autoload_register('WeixinAPI\Api::autoload');
+use WeixinAPI\Helper\Exception;
 
 /**
  * 微信API基类.
@@ -56,17 +54,17 @@ class Api
     {
         $className = __NAMESPACE__ . '\\API\\' . $className . 'Api';
         if (!$className || !is_string($className)) {
-            throw new \Exception('类名参数不正确', 1);
+            throw new Exception('类名参数不正确', 1);
         }
 
         if (!class_exists($className)) {
-            throw new \Exception($className . '接口不存在', 1);
+            throw new Exception($className . '接口不存在', 1);
         }
 
         if (!array_key_exists($className, self::$selfInstanceMap)) {
             $api = new $className();
             if (!$api instanceof BaseApi) {
-                throw new \Exception($className . ' 必须继承 BaseApi', 1);
+                throw new Exception($className . ' 必须继承 BaseApi', 1);
             }
 
             self::$selfInstanceMap[$className] = $api;
@@ -170,7 +168,7 @@ class Api
 
             $res = self::_get($module, '', $queryStr);
             if (false === $res) {
-                throw new \Exception('获取AccessToken失败!', 1);
+                throw new Exception('获取AccessToken失败!', 1);
             }
 
             $token = $res['access_token'];
@@ -478,38 +476,5 @@ class Api
         $res = $cacheDriver->_set($name, $value, $expires);
 
         return $res ? true : false;
-    }
-
-    /**
-     * 自动加载方法.
-     *
-     * @author Cui
-     *
-     * @date   2015-07-29
-     *
-     * @param string $class 类名
-     * @param array  $param 参数
-     */
-    public static function autoload($class)
-    {
-        static $_map;
-        if (!isset($_map[$class])) {
-            $class = explode('\\', $class);
-            $rootpath = array_shift($class);
-            if ($rootpath != "WeixinAPI") {
-                return;
-            }
-
-            $class = implode(DIRECTORY_SEPARATOR, $class);
-            $file = (__DIR__ . DIRECTORY_SEPARATOR . $class . '.class.php');
-
-            if (!file_exists($file)) {
-                return false;
-            }
-
-            include $file;
-
-            $_map[$class] = $file;
-        }
     }
 }

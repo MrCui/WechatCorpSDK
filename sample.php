@@ -3,11 +3,11 @@
 use WeixinAPI\Api;
 
 // 引入 核心类
-include '/WeixinAPI/Api.class.php';
+include './WeixinAPI/autoloader.php';
 
-$CORP_ID      = '';     // 企业号CORP_ID
-$CORP_SECRECT = '';     // 企业号CORP_SECRECT
-$cacheDriver  = 'File'; // 缓存方式 目前有两种 Redis 和 File. 使用Redis, 请先调整Redis驱动构造方法中的参数
+$CORP_ID = ''; // 企业号CORP_ID
+$CORP_SECRECT = ''; // 企业号CORP_SECRECT
+$cacheDriver = 'File'; // 缓存方式 目前有两种 Redis 和 File. 使用Redis, 请先调整Redis驱动构造方法中的参数
 
 // 初始化
 Api::init($CORP_ID, $CORP_SECRECT, $cacheDriver);
